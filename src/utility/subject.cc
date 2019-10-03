@@ -4,9 +4,9 @@
 
 Subject::~Subject() {}
 
-void Subject::notifyAllObservers(std::shared_ptr<Event> event) {
+void Subject::notifyAllObservers() {
     for(auto o : observers){
-        o->notify(event);
+        o->notify();
     }
 }
 

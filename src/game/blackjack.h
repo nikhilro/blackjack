@@ -4,9 +4,13 @@
 #include "iostream"
 
 #include "abstractGame.h"
+#include "../roles/dealer.h"
 
 class Blackjack : public AbstractGame {
-    void playImpl(std::istream& sin, std::ostream& sout) override;
+        std::shared_ptr<Dealer> dealer;
+        void playImpl(std::istream& sin, std::ostream& sout) override;
+    public:
+        Blackjack(int numOfPlayers);
 };
 
 #endif

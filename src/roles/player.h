@@ -9,8 +9,13 @@
 #include "../utility/observer.h"
 
 class Player: public AbstractRole, public Observer {
-    std::shared_ptr<Dealer> dealer;
-    void playImpl(std::istream& sin, std::ostream& sout);
+        int order;
+        std::shared_ptr<Dealer> dealer;
+        void playImpl(std::istream& sin, std::ostream& sout) override;
+    public:
+        void notify() override;
+        Player(std::shared_ptr<Dealer> dealer, int order);
+        ~Player();
 };
 
 #endif

@@ -8,8 +8,9 @@
 #include "../models/hand.h"
 
 class Dealer : public AbstractRole, public Subject {
-    std::unordered_map<std::string, Hand> state;
-    void playImpl(std::istream& sin, std::ostream& sout);
+        void playImpl(std::istream& sin, std::ostream& sout) override;
+    public:
+        std::unordered_map<std::string, Hand> state;
 };
 
 #endif

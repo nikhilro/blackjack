@@ -13,6 +13,7 @@ class AbstractRole {
         virtual void playImpl(std::istream& sin, std::ostream& sout) = 0;
     public:
         bool isDone();
+        void nextRound();
         void play(std::istream& sin, std::ostream& sout);
         virtual ~AbstractRole() = default;
 };

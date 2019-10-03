@@ -1,4 +1,4 @@
-BIN 		:= seamail
+BIN 		:= blackjack
 
 DEV_FLAGS 	:= -g
 FLAGS		:= -Wall -std=c++14 -MMD $(DEV_FLAGS)

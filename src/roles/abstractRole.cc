@@ -9,3 +9,7 @@ void AbstractRole::play(istream& sin, ostream& sout) {
 bool AbstractRole::isDone() {
     return done;
 }
+
+void AbstractRole::nextRound() {
+    done = false;
+}
