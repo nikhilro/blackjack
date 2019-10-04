@@ -8,9 +8,14 @@
 #include "../models/hand.h"
 
 class Dealer : public AbstractRole, public Subject {
+        std::vector<std::pair<char, char>> deck;
+        int numPlayers = 0;
+        void deal(std::istream& sin, std::ostream& sout);
+        std::pair<char, char> pull();
         void playImpl(std::istream& sin, std::ostream& sout) override;
     public:
-        std::unordered_map<std::string, Hand> state;
+        Dealer(int numPlayers);
+        std::unordered_map<std::string, std::vector<Hand>> state;
 };
 
 #endif

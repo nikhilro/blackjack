@@ -21,4 +21,13 @@ const char QUEEN = '12';
 const char KING = '13';
 
 const char FACE_DOWN = '0';
+
+// plays
+const char HIT = 'I';
+const char STAND = 'N';
+const char SPLIT = 'T';
+const char DOUBLE = 'E';
+const char SURRENDER = 'R';
+
+const char DEALER = 'L';
 #endif

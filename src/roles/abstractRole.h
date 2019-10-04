@@ -3,12 +3,13 @@
 
 #include "iostream"
 #include "utility"
+#include "vector"
 
 #include "../models/hand.h"
 
 class AbstractRole {
     protected:
-        Hand hand;
+        std::vector<Hand> hands;
         bool done = false;
         virtual void playImpl(std::istream& sin, std::ostream& sout) = 0;
     public:
