@@ -10,12 +10,16 @@
 class Dealer : public AbstractRole, public Subject {
         std::vector<std::pair<char, char>> deck;
         int numPlayers = 0;
-        void deal(std::istream& sin, std::ostream& sout);
+        void printState(std::ostream& sout);
         std::pair<char, char> pull();
+        void deal(std::istream& sin, std::ostream& sout);
         void playImpl(std::istream& sin, std::ostream& sout) override;
+        static bool isEqualRank(const Hand& hand);
+        bool respondImpl(int player, std::pair<int, char> play, std::ostream& sout);
     public:
-        Dealer(int numPlayers);
         std::unordered_map<std::string, std::vector<Hand>> state;
+        Dealer(int numPlayers);
+        bool respond(int player, std::pair<int, char> play, std::ostream& sout);
 };
 
 #endif

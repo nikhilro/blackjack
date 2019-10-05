@@ -2,14 +2,17 @@
 #define HAND_H_
 
 #include "string"
+#include "vector"
 
 class Hand {
     public:
-        std::pair<char, char> first;  // [(suit, rank)]
-        std::pair<char, char> second;
+        std::vector<std::pair<char, char>> cards;  // [(suit, rank)]
     public:
-        Hand(std::pair<char, char> first): first{first} {}
-        Hand(std::pair<char, char> first, std::pair<char, char> second): first{first}, second{second} {}
+        Hand(std::pair<char, char> first);
+        Hand(std::pair<char, char> first, std::pair<char, char> second);
+        Hand(std::vector<std::pair<char, char>> hands);
+        static char rank(char value);
+        int total();
 };
 
 #endif

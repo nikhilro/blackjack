@@ -11,6 +11,8 @@
 class Player: public AbstractRole, public Observer {
         int order;
         int betSize;
+        char currentPlay;
+        int currentHand;
         std::shared_ptr<Dealer> dealer;
         void playImpl(std::istream& sin, std::ostream& sout) override;
         int betImpl(std::istream&, std::ostream&);
@@ -19,6 +21,8 @@ class Player: public AbstractRole, public Observer {
         ~Player();
         void notify() override;
         int bet(std::istream&, std::ostream&);
+        std::pair<int, char> status();
+        int ordering();
 };
 
 #endif
