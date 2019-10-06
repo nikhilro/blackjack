@@ -1,7 +1,6 @@
 #ifndef PLAYER_H_
 #define PLAYER_H_
 
-#include "unordered_map"
 #include "memory"
 
 #include "abstractRole.h"

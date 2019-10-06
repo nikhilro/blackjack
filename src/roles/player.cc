@@ -5,8 +5,8 @@
 using namespace std;
 
 void Player::playImpl(istream& sin, ostream& sout) {
-    sout << "Player " << order << "'s turn.";
-    sout << "How would you like to play?";
+    sout << "Player " << order << "'s turn. ";
+    sout << "What would you like to do? ";
     sout << "[hit: " << HIT;
     sout << ", stand: " << STAND;
     sout << ", double: " << DOUBLE;
@@ -26,7 +26,7 @@ void Player::playImpl(istream& sin, ostream& sout) {
 }
 
 int Player::betImpl(istream& sin, ostream& sout) {
-    sout << "How much would you like to bet?" << endl;
+    sout << "Player " << order << ": How much would you like to bet?" << endl;
     sin >> betSize;
     return betSize;
 }

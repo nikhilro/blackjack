@@ -17,7 +17,7 @@ int main() {
     }
 
     char type;
-    cout << "Would you like to play another game? [y/n]" << endl;
+    cout << endl << "Would you like to play another game? [y/n]" << endl;
     cin >> type;
     nextGame = type == 'y';
   }

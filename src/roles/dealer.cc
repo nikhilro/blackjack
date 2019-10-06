@@ -9,17 +9,19 @@ using namespace std;
 void printHands(ostream& sout, vector<Hand> hands) {
     for (auto& hand: hands) {
         for (int i = 0; i < hand.cards.size(); ++i) {
-            sout << i << ": " << hand.cards[i].first << hand.cards[i].second << " ";
+            sout << i + 1 << ": " << hand.cards[i].first << (int) hand.cards[i].second << "  ";
         }
+        sout << "Total: " << hand.total() << endl;
     }
 }
 
 void Dealer::printState(ostream& sout) {
+    sout << endl;
     for (auto& hands: state) {
         if (hands.first == to_string(DEALER)) {
             sout << "Dealer cards are:" << endl;
         } else {
-            sout << "Player " << hands.first << "cards are:" << endl;
+            sout << "Player " << hands.first << " cards are:" << endl;
         }
         printHands(sout, hands.second);
     }
@@ -32,11 +34,10 @@ pair<char, char> Dealer::pull() {
 }
 
 void Dealer::deal(istream& sin, ostream& sout) {
-    state[to_string(DEALER)] = vector<Hand>({pull()});
+    state[to_string(DEALER)] = vector<Hand>{pull()};
     for (int i = 0; i < numPlayers; ++i) {
-        state[to_string(i)] = vector<Hand>({pull(), pull()});
+        state[to_string(i)] = vector<Hand>{Hand{pull(), pull()}};
     }
-
     hands = state[to_string(DEALER)];
     notifyAllObservers();
     printState(sout);
@@ -46,10 +47,11 @@ void Dealer::playImpl(istream& sin, ostream& sout) {
     if (state.empty()) {
         deal(sin, sout);
     } else {
-        state[to_string(DEALER)].emplace_back(pull());
+        state[to_string(DEALER)].front().cards.emplace_back(pull());
         hands = state[to_string(DEALER)];
         int total = hands.front().total();
         done = total >= 17;
+        printState(sout);
     }
 }
 
@@ -70,10 +72,12 @@ bool Dealer::respondImpl(int player, std::pair<int, char> play, std::ostream& so
             }
             break;
         case STAND:
-        case SURRENDER:
-            valid = state[to_string(player)][play.first].cards.size() <= 2;
             break;
-        case SPLIT:
+        case SURRENDER:
+            valid = state[to_string(player)][play.first].cards.size() == 2;
+            break;
+        case SPLIT: 
+        {
             auto& hand = state[to_string(player)][play.first];
             if (hand.cards.size() == 2 && isEqualRank(hand)) {
                 state[to_string(player)] = vector<Hand>{{hand.cards[0], pull()}, {hand.cards[1], pull()}};
@@ -81,10 +85,11 @@ bool Dealer::respondImpl(int player, std::pair<int, char> play, std::ostream& so
                 valid = false;
             }
             print = true;
+        }
             break;
-        // default:
-        //     valid = false;
-        //     break;
+        default:
+            valid = false;
+            break;
     }
     if (!valid) {
         sout << "Invalid Play: " << play.second << "." << endl;
@@ -93,6 +98,16 @@ bool Dealer::respondImpl(int player, std::pair<int, char> play, std::ostream& so
         printState(sout);
     }
     return valid;
+}
+
+bool Dealer::approveImpl(int player) {
+    auto& hands = state[to_string(player)];
+    for (auto& hand : hands) {
+        if (hand.total() < 21) {
+            return true;
+        }
+    }
+    return false;
 }
 
 Dealer::Dealer(int num): numPlayers{num} {
@@ -111,4 +126,8 @@ Dealer::Dealer(int num): numPlayers{num} {
 
 bool Dealer::respond(int player, std::pair<int, char> play, std::ostream& sout) {
     return respondImpl(player, play, sout);
+}
+
+bool Dealer::approve(int player) {
+    return approveImpl(player);
 }

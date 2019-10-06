@@ -14,7 +14,7 @@ void Blackjack::playImpl(istream& sin, ostream& sout) {
     } else {
         dealer->play(sin, sout); // deal
         for (auto& player : players) {
-            while (!player->isDone()) {
+            while (!player->isDone() && dealer->approve(player->ordering())) {
                 player->play(sin, sout); // play
                 pair<int, char> play = player->status();
                 if (dealer->respond(player->ordering(), play, sout)) { // valid play
@@ -65,11 +65,13 @@ void Blackjack::printHelper(ostream& sout, const vector<int>& vec) {
 }
 
 void Blackjack::printBets(ostream& sout) {
+    sout << endl;
     sout << "Bets are:" << endl;
-    printHelper(sout, winnings);
+    printHelper(sout, bets);
 }
 
 void Blackjack::printWinnings(ostream& sout) {
+    sout << endl;
     sout << "Winnings are:" << endl;
     printHelper(sout, winnings);
 }
@@ -79,6 +81,7 @@ void Blackjack::evaluate() {
     int dealerTotal = state[to_string(DEALER)].front().total();
     if (dealerTotal > 21) {
         for (int i = 0; i < numPlayers; ++i) {
+            if (winnings[i] != 0) break;
             for (auto& hand: state[to_string(i)]) {
                 if (hand.total() <= 21) {
                     winnings[i] = 2 * bets[i];
@@ -88,6 +91,7 @@ void Blackjack::evaluate() {
         }
     } else if (dealerTotal == 21) {
         for (int i = 0; i < numPlayers; ++i) {
+            if (winnings[i] != 0) break;
             for (auto& hand: state[to_string(i)]) {
                 if (hand.total() == 21) {
                     winnings[i] = bets[i];
@@ -97,6 +101,7 @@ void Blackjack::evaluate() {
         }
     } else if (dealerTotal < 21) {
         for (int i = 0; i < numPlayers; ++i) {
+            if (winnings[i] != 0) break;
             vector<int> playerWinnings;
             for (auto& hand: state[to_string(i)]) {
                 int handTotal = hand.total();
@@ -121,8 +126,8 @@ void Blackjack::evaluate() {
 }
 
 Blackjack::Blackjack(int num): numPlayers{num}, dealer{make_shared<Dealer>(num)} {
-    while (--num) {
-        players.emplace_back(make_unique<Player>(dealer, numPlayers - num));
+    while (num) {
+        players.emplace_back(make_unique<Player>(dealer, numPlayers - num--));
         winnings.emplace_back(0);
     }
 }

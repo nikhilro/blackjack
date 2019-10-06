@@ -31,6 +31,8 @@ For the most part, I used smart pointers; so, there shouldn't be memory leaks; I
 
 The error handling is not amazing. Ideally, there would be a sanitizer class for taking in inputs in all places. That could have been used for adding commands like help etc. too. Right now, either the user enters everything perfecting or unexpected behaviour.
 
+String handling is not amazing either. It would have been nice to create a constants file that houses all of them. That would make it easy to language related things such as switch languages and correct grammatical mistakes.
+
 Ending on a positive note, streams are used everywhere and passed dowm from main to the objects so it's trivial to add graphics or other formatting feature functionality to it.
 
 

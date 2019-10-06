@@ -1,7 +1,7 @@
 #ifndef DEALER_H_
 #define DEALER_H_
 
-#include "unordered_map"
+#include "map"
 
 #include "abstractRole.h"
 #include "../utility/subject.h"
@@ -16,10 +16,12 @@ class Dealer : public AbstractRole, public Subject {
         void playImpl(std::istream& sin, std::ostream& sout) override;
         static bool isEqualRank(const Hand& hand);
         bool respondImpl(int player, std::pair<int, char> play, std::ostream& sout);
+        bool approveImpl(int player);
     public:
-        std::unordered_map<std::string, std::vector<Hand>> state;
+        std::map<std::string, std::vector<Hand>> state;
         Dealer(int numPlayers);
         bool respond(int player, std::pair<int, char> play, std::ostream& sout);
+        bool approve(int player);
 };
 
 #endif
