@@ -25,13 +25,13 @@ void Player::playImpl(istream& sin, ostream& sout) {
     }
 }
 
-int Player::bet(istream& sin, ostream& sout) {
+int Player::betImpl(istream& sin, ostream& sout) {
     sout << "How much would you like to bet?" << endl;
     sin >> betSize;
     return betSize;
 }
 
-Player::Player(shared_ptr<Dealer> dealer, int order): dealer{dealer}, order{order} {
+Player::Player(shared_ptr<Dealer> dealer, int order): order{order}, dealer{dealer} {
     dealer->attach(this);
 }
 

@@ -8,11 +8,11 @@
 #include "../roles/player.h"
 
 class Blackjack : public AbstractGame {
+        int numPlayers;
         std::shared_ptr<Dealer> dealer;
         std::vector<std::unique_ptr<Player>> players;
         std::vector<int> bets;
         std::vector<int> winnings;
-        int numPlayers;
         void playImpl(std::istream& sin, std::ostream& sout) override;
         void placeBets(std::istream&, std::ostream& sout);
         void respond(int player, std::pair<int, char> play, std::ostream& sout);

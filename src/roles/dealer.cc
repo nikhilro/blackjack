@@ -43,7 +43,7 @@ void Dealer::deal(istream& sin, ostream& sout) {
 }
 
 void Dealer::playImpl(istream& sin, ostream& sout) {
-    if (state.empty) {
+    if (state.empty()) {
         deal(sin, sout);
     } else {
         state[to_string(DEALER)].emplace_back(pull());
@@ -60,7 +60,8 @@ bool Dealer::isEqualRank(const Hand& hand) {
 bool Dealer::respondImpl(int player, std::pair<int, char> play, std::ostream& sout) {
     bool valid = true, print = false;
     switch (play.second) {
-    case HIT || DOUBLE:
+        case HIT:
+        case DOUBLE:
             if (state[to_string(player)][play.first].total() < 21) {
                 state[to_string(player)][play.first].cards.emplace_back(pull());
                 print = true;
@@ -81,9 +82,9 @@ bool Dealer::respondImpl(int player, std::pair<int, char> play, std::ostream& so
             }
             print = true;
             break;
-        default:
-            valid = false;
-            break;
+        // default:
+        //     valid = false;
+        //     break;
     }
     if (!valid) {
         sout << "Invalid Play: " << play.second << "." << endl;
@@ -101,7 +102,7 @@ Dealer::Dealer(int num): numPlayers{num} {
     
     for (int i = 0; i < suits.size(); ++i) {
         for (int j = 0; j < ranks.size(); ++j) {
-            deck.emplace_back(pair{suits[i], ranks[j]});
+            deck.emplace_back(pair<char, char>{suits[i], ranks[j]});
         }
     }
 

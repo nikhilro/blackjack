@@ -9,7 +9,7 @@
 using namespace std;
 
 void Blackjack::playImpl(istream& sin, ostream& sout) {
-    if (bets.size == 0) {
+    if (bets.size() == 0) {
         placeBets(sin, sout);
     } else {
         dealer->play(sin, sout); // deal
@@ -17,8 +17,8 @@ void Blackjack::playImpl(istream& sin, ostream& sout) {
             while (!player->isDone()) {
                 player->play(sin, sout); // play
                 pair<int, char> play = player->status();
-                if (dealer->respond(player->ordering, play, sout)) { // valid play
-                    respond(player->ordering, play, sout);
+                if (dealer->respond(player->ordering(), play, sout)) { // valid play
+                    respond(player->ordering(), play, sout);
                 }
             }
         }
@@ -122,7 +122,7 @@ void Blackjack::evaluate() {
 
 Blackjack::Blackjack(int num): numPlayers{num}, dealer{make_shared<Dealer>(num)} {
     while (--num) {
-        players.emplace_back(make_unique<Player>(dealer));
+        players.emplace_back(make_unique<Player>(dealer, numPlayers - num));
         winnings.emplace_back(0);
     }
 }
